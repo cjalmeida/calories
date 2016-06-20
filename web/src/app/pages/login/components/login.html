@@ -1,0 +1,31 @@
+<div class="login-page">
+  <div class="row">
+    <div class="col-lg-4 col-lg-offset-4">
+      <img src="img/SB-admin.png" width="150px" class="user-avatar"/>
+      <h1>Calories Application</h1>
+      <form role="form">
+        <div class="form-content">
+          <div class="form-group">
+            <input type="text" [(ngModel)]="email" class="form-control input-underline input-lg" placeholder="Email">
+          </div>
+
+          <div class="form-group">
+            <input type="password" [(ngModel)]="password" class="form-control input-underline input-lg"
+                   placeholder="Password">
+          </div>
+        </div>
+        <p *ngIf="!!error">
+          {{error}}
+        </p>
+        <div class="row">
+          <div class="col-lg-6">
+            <a class="btn rounded-btn" (click)="login()"> Log in </a>
+          </div>
+          <div class="col-lg-6">
+            <a class="btn rounded-btn" linkTo="/signup"> Signup </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

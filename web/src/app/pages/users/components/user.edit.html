@@ -1,0 +1,78 @@
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <div class="row">
+    <div class="col-xl-12">
+      <h2 class="page-header">
+        Users
+      </h2>
+      <ol class="breadcrumb">
+        <li>
+          <i class="fa fa-dashboard"></i> <a href="Javascript:void(0);" linkTo="/dashboard/home">Dashboard</a>
+        </li>
+        <li>
+          <i class="fa fa-users"></i> <a href="javascript:;" linkTo="/dashboard/users">Users</a>
+        </li>
+        <li class="active">
+          Edit user {{ id$ | async }}
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- /.row -->
+  <div class="row" *ngIf="user">
+    <div class="col-xl-6 col-lg-12">
+      <form role="form">
+        <fieldset class="form-group required">
+          <label>Name</label>
+          <input #name type="text" [(ngModel)]="user.fullName" class="form-control">
+        </fieldset>
+        <fieldset class="form-group required">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="user.email" class="form-control">
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Password</label>
+          <input type="password" [(ngModel)]="user.password" class="form-control" style="width: 50%">
+          <span class="small">(leave empty for no change)</span>
+        </fieldset>
+
+        <fieldset class="form-group required">
+          <label>Timezone</label>
+          <input type="text" [(ngModel)]="user.userTimezone" class="form-control" style="width: 33%">
+        </fieldset>
+
+        <fieldset class="form-group">
+          <label>Calories per Day</label>
+          <input type="text" [(ngModel)]="user.caloriesPerDay" class="form-control" style="width: 33%">
+        </fieldset>
+
+        <div *ngIf="loggedUser.hasRole('ROLE_ADMIN', 'ROLE_MANAGER')">
+          <div class="form-group">
+            <label>Is active?</label>
+            <div class="radio">
+              <label (click)="user.active = true">
+                <input type="radio" name="active" [checked]="user.active"> Yes
+              </label>
+            </div>
+            <div class="radio">
+              <label (click)="user.active = false">
+                <input type="radio" name="active" [checked]="!user.active"> No
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Roles</label>
+            <div class="checkbox" *ngFor="let role of roles">
+              <label>
+                <input type="checkbox" [(ngModel)]="role.selected"> {{role.name}}
+              </label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" (click)="submit()" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

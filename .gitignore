@@ -1,0 +1,16 @@
+### Gradle
+.gradle
+!gradle-wrapper.jar
+hs_err_pid*
+.idea
+
+build/
+api/build
+client/build
+web/build
+web/node_modules
+web/bower_components
+api/db
+
+
+

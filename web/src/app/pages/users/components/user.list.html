@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <div class="row">
+    <div class="col-xl-12">
+      <h2 class="page-header">
+        Users
+      </h2>
+      <ol class="breadcrumb">
+        <li>
+          <i class="fa fa-dashboard"></i> <a href="Javascript:void(0);" linkTo="/dashboard/home">Dashboard</a>
+        </li>
+        <li class="active">
+          <i class="fa fa-users"></i> Users
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-xl-6 col-lg-12">
+      <div class="card card-block">
+        <div class="row" *ngIf="saved$ | async">
+          <div class="alert alert-info" style="">
+            User saved!
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-inverse">
+            <tr>
+              <th>Name</th>
+              <th>E-mail</th>
+              <th>Roles</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let m of res?._embedded?.users">
+              <th scope="row"><a [linkTo]="'/dashboard/users/' + m.id">{{m.fullName}}</a></th>
+              <td>{{m.email}}</td>
+              <td>{{m.roles}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

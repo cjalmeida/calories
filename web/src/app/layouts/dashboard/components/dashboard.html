@@ -1,0 +1,12 @@
+<dashboard-cmp ngShow="auth.hasValidToken()">
+  <div>
+    <top-nav></top-nav>
+    <sidebar-cmp></sidebar-cmp>
+    <section class="main-container" [ngClass]="{sidebarPushRight: isActive}">
+      <route-view></route-view>
+    </section>
+  </div>
+</dashboard-cmp>
+<div *ngIf="!auth.hasValidToken()">
+  Redirecting to login...
+</div>
