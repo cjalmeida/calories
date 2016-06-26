@@ -3,7 +3,8 @@ import {HttpClient} from "../services/httpclient.service";
 import {RequestOptionsArgs, URLSearchParams} from '@angular/http'
 import * as moment  from 'moment';
 import {extractId} from './utils';
-
+import {SearchOpts} from "./searchopts.ts";
+import {User as UserMixin} from "../services/user.mixin.ts";
 type Moment = moment.Moment;
 
 @Injectable()
@@ -26,7 +27,7 @@ export class Users {
       .map((res) => {
         let data = res.json();
         data.id = extractId(data);
-        return this.http.get(`/users/${id}/roles`)
+        return this.http.get(`/api/users/${id}/roles`)
           .map((resRoles) => {
             data.roles = resRoles.json()._embedded.roles;
             return data;
@@ -36,14 +37,10 @@ export class Users {
       .toPromise();
   }
 
-  list(page:number = null):Promise<any> {
-    const search = new URLSearchParams();
-    search.set("projection", "simple");
-    if (page !== null) {
-      search.set("page", page.toString());
-    }
+  list(search?: SearchOpts):Promise<any> {
+    search = search || new SearchOpts();
     return this.http
-      .get('/users', {search: search})
+      .get('/users', {search: search.toParams()})
       .map((res) => res.json())
       .toPromise();
   }
@@ -62,4 +59,18 @@ export class Users {
       return this.http.post(`/users`, body).toPromise();
     }
   }
+
+  remove(id:number):Promise<any> {
+    return this.http
+      .delete(`/users/${id}`)
+      .toPromise();
+  }
+
+}
+
+export class User extends UserMixin {
+  id: any;
+  next: any;
+  roles:[any];
+  password:string;
 }

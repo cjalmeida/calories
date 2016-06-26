@@ -26,14 +26,14 @@ import tt.calories.domain.User;
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
     @Override
-    @PreAuthorize("@sec.checkUser(#user.id)")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') || @sec.checkUser(#user.id)")
     <S extends User> S save(@P("user") S user);
 
     @RestResource(exported = false)
     @Override
     <S extends User> Iterable<S> save(Iterable<S> entities);
 
-    @PreAuthorize("@sec.checkUser(#id)")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') || @sec.checkUser(#id)")
     @Override
     User findOne(@P("id") Long id);
 
@@ -44,11 +44,11 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     boolean exists(Long aLong);
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     Iterable<User> findAll();
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     Iterable<User> findAll(Iterable<Long> longs);
 
     @Override
@@ -56,26 +56,26 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     long count();
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     void delete(Long aLong);
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     void delete(User entity);
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     void delete(Iterable<? extends User> entities);
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     void deleteAll();
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     Iterable<User> findAll(Sort sort);
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     Page<User> findAll(Pageable pageable);
 }

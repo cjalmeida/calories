@@ -101,7 +101,7 @@ public class User {
      * Use this method to update the password. It's hashed before persistence.
      */
     @Transient
-
+    @JsonProperty
     public void setPlainPassword(String plainPassword) {
         this.password = PasswordHasher.hash(plainPassword, salt);
     }

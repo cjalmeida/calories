@@ -14,6 +14,8 @@ import {UserListComponent} from "./app/pages/users/components/user.list";
 import {UserEditComponent} from "./app/pages/users/components/user.edit";
 import {config} from './config';
 import './styles/main.scss'
+import {MealListComponent} from "./app/pages/meals/components/meals.list";
+import {MealEditComponent} from "./app/pages/meals/components/meals.edit";
 
 
 const routes:Routes = [
@@ -24,7 +26,8 @@ const routes:Routes = [
       {path: '/home', component: HomeComponent},
       {path: '/users/:id', component: UserEditComponent},
       {path: '/users', component: UserListComponent},
-      {path: '/meals', component: HomeComponent},
+      {path: '/meals/:id', component: MealEditComponent},
+      {path: '/meals', component: MealListComponent},
     ]
   },
   { path: '/login', component: LoginComponent},
@@ -38,7 +41,7 @@ const routes:Routes = [
  * @see https://angular.io/docs/ts/latest/api/platform-browser-dynamic/index/bootstrap-function.html
  */
 bootstrap(AppComponent, [
-  HTTP_PROVIDERS, AuthService, HttpClient, Meals, Users, Roles,
+  HTTP_PROVIDERS, AuthService, HttpClient, Meals, Users, Roles, AuthGuard,
   provideRouter(routes),
   provide(APP_BASE_HREF, {useValue: '/'}),
   provide('config', {useValue: config})

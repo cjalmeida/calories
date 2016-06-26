@@ -476,3 +476,10 @@ a:hover{
   color: #FF0000;
 }
 
+.form-group.error > label {
+  color: #FF0000;
+}
+
+.form-group.error input {
+  border-color: #FF0000
+}

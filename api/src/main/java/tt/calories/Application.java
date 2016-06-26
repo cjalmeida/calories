@@ -10,10 +10,14 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.validation.Validator;
 import tt.calories.data.DemoData;
 import tt.calories.data.SeedData;
 import tt.calories.repo.UserRepository;
+
+import java.util.TimeZone;
 
 /**
  * Entry-point for running as a stand-alone application
@@ -26,9 +30,12 @@ import tt.calories.repo.UserRepository;
 public class Application {
 
 
-    private static ConfigurableApplicationContext context;
+    static ConfigurableApplicationContext context;
 
     public static void main(String[] args) {
+        // For consistency, all dates are in stored and manipulated in UTC
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
         context = SpringApplication.run(Application.class, args);
         loadData(context);
     }

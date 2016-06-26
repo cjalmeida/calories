@@ -25,6 +25,11 @@
             User saved!
           </div>
         </div>
+        <div class="row" *ngIf="deleted$ | async">
+          <div class="alert alert-info" style="">
+            User deleted!
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table">
             <thead class="thead-inverse">
@@ -41,6 +46,17 @@
               <td>{{m.roles}}</td>
             </tr>
           </table>
+        </div>
+        <div class="row" *ngIf="hasPrev() || hasNext()">
+          <a *ngIf="hasPrev()" (click)="previous()"><i class="fa fa-angle-left"></i> previous</a>
+          <span>{{res?.page.number}}</span>
+          <a *ngIf="hasNext()" (click)="next()">next <i class="fa fa-angle-right"></i></a>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-lg-12">
+          <input type="button" linkTo="/dashboard/users/new" class="btn btn-primary" value="Create User">
         </div>
       </div>
     </div>

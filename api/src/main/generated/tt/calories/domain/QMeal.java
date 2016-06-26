@@ -1,19 +1,19 @@
 package tt.calories.domain;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.querydsl.core.types.dsl.*;
+import com.mysema.query.types.path.*;
 
-import com.querydsl.core.types.PathMetadata;
+import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PathInits;
 
 
 /**
  * QMeal is a Querydsl query type for Meal
  */
-@Generated("com.querydsl.codegen.EntitySerializer")
+@Generated("com.mysema.query.codegen.EntitySerializer")
 public class QMeal extends EntityPathBase<Meal> {
 
     private static final long serialVersionUID = 865373843L;
@@ -42,15 +42,15 @@ public class QMeal extends EntityPathBase<Meal> {
         this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QMeal(PathMetadata metadata) {
+    public QMeal(PathMetadata<?> metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QMeal(PathMetadata metadata, PathInits inits) {
+    public QMeal(PathMetadata<?> metadata, PathInits inits) {
         this(Meal.class, metadata, inits);
     }
 
-    public QMeal(Class<? extends Meal> type, PathMetadata metadata, PathInits inits) {
+    public QMeal(Class<? extends Meal> type, PathMetadata<?> metadata, PathInits inits) {
         super(type, metadata, inits);
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
     }

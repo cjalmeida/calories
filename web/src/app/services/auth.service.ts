@@ -75,7 +75,7 @@ export class AuthService {
     // Try to fetch user if we have a valid token.
     if (this.hasValidToken()) {
       return this.currentUser = this.http
-        .get('/users/search/self?projection=simple')
+        .get('/users/search/self?projection=list')
         .map((res) => new User(res.json()))
         .toPromise();
 

@@ -8,13 +8,13 @@ import tt.calories.domain.User;
 import java.util.Set;
 
 /**
- * "simple" projection for user.
+ * User projection suited for listing.
  *
  * @author Cloves Almeida
  * @version 1.0.0
  */
-@Projection(name = "simple", types = {User.class})
-public interface UserSimple {
+@Projection(name = "list", types = {User.class})
+public interface UserListProjection {
 
     Long getId();
 

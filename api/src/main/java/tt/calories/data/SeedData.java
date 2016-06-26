@@ -22,7 +22,8 @@ import javax.persistence.EntityManager;
 @Component
 public class SeedData {
 
-    static User admin;
+    public static final String ADMIN_DEFAULT_EMAIL = "admin@example.com";
+    public static final String ADMIN_DEFAULT_PASSWORD = "admin";
 
     @Autowired
     EntityManager em;
@@ -43,7 +44,7 @@ public class SeedData {
         Role userRole = new Role("ROLE_USER", "App user");
         em.persist(userRole);
 
-        admin = new User("Administrator", "admin@example.com", "admin");
+        User admin = new User("Administrator", ADMIN_DEFAULT_EMAIL, ADMIN_DEFAULT_PASSWORD);
         admin.getRoles().add(adminRole);
         em.persist(admin);
     }

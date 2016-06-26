@@ -1,19 +1,19 @@
 package tt.calories.domain;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.querydsl.core.types.dsl.*;
+import com.mysema.query.types.path.*;
 
-import com.querydsl.core.types.PathMetadata;
+import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PathInits;
 
 
 /**
  * QUser is a Querydsl query type for User
  */
-@Generated("com.querydsl.codegen.EntitySerializer")
+@Generated("com.mysema.query.codegen.EntitySerializer")
 public class QUser extends EntityPathBase<User> {
 
     private static final long serialVersionUID = 865625755L;
@@ -46,7 +46,7 @@ public class QUser extends EntityPathBase<User> {
         super(path.getType(), path.getMetadata());
     }
 
-    public QUser(PathMetadata metadata) {
+    public QUser(PathMetadata<?> metadata) {
         super(User.class, metadata);
     }
 

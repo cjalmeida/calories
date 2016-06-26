@@ -8,10 +8,22 @@ import {AuthService} from './auth.service'
 
 @Injectable()
 export class AuthGuard implements Guard {
+
   constructor(private auth: AuthService, private router: Router) {
+
   }
 
-  protectRoute(candidate:TraversalCandidate) {
-    return Observable.of(this.auth.hasValidToken());
+  protectRoute(candidate:TraversalCandidate):Observable<boolean> {
+    let obs = Observable.of(this.auth.hasValidToken());
+
+    obs.distinctUntilChanged()
+      .subscribe((val) => {
+        if (val == false) {
+          console.log('No token');
+          this.router.go('/login');
+        }
+      });
+    
+    return obs;
   }
 }

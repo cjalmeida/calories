@@ -9,13 +9,10 @@ buildscript {
 }
 import org.springframework.boot.gradle.run.BootRunTask
 
-plugins {
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.6"
-}
-
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'jacoco'
+apply plugin: 'groovy'
 
 repositories {
     jcenter()
@@ -45,14 +42,11 @@ dependencies {
     compile 'org.hibernate:hibernate-envers:4.3.11.Final'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.auth0:java-jwt:2.1.0'
-    compile 'com.querydsl:querydsl-core:4.1.2'
-    compile 'com.querydsl:querydsl-apt:4.1.2'
-    compile 'com.querydsl:querydsl-jpa:4.1.2'
+    compile 'com.mysema.querydsl:querydsl-core:3.7.3'
+    compile 'com.mysema.querydsl:querydsl-apt:3.7.3'
+    compile 'com.mysema.querydsl:querydsl-jpa:3.7.3'
 
-    querydsl 'com.querydsl:querydsl-core:4.1.2'
-    querydsl 'com.querydsl:querydsl-apt:4.1.2'
-    querydsl 'com.querydsl:querydsl-jpa:4.1.2'
-
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.7'
     testCompile 'com.jayway.restassured:rest-assured:2.9.0'
 }
 
@@ -60,25 +54,14 @@ springBoot {
     mainClass = 'tt.calories.Application'
 }
 
-querydsl {
-    jpa = true
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = file('src/main/generated')
 }
 
-
-task dropDatabase(type: Delete) {
-    description 'Drops the development database in $PROJECT_HOME/db'
-    delete 'db'
-}
-
-task loadTestData(type: BootRunTask) {
-    description 'Load test data for interactive use'
-    classpath = sourceSets.test.runtimeClasspath
-    main = 'tt.calories.DataLoader'
-    args 'testData'
-}
-
-task testServer(type: BootRunTask) {
-    description 'Load test data for interactive use'
-    classpath = sourceSets.test.runtimeClasspath
-    main = 'tt.calories.TestServer'
-}
+sourceSets.main.java.srcDirs += 'src/main/generated'

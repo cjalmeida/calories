@@ -2,15 +2,14 @@ package tt.calories.controllers;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tt.calories.domain.QMeal;
-import tt.calories.domain.QUser;
 import tt.calories.security.SecurityService;
 
 import javax.persistence.EntityManager;
@@ -41,7 +40,7 @@ public class ReportsController {
         @Param("mealDateStart") java.sql.Date mealDateStart,
         @Param("mealDateEnd") java.sql.Date mealDateEnd) {
 
-        JPAQuery<Object> query = new JPAQuery<>(entityManager);
+        JPAQuery query = new JPAQuery(entityManager);
         QMeal m = QMeal.meal;
 
         BooleanBuilder where = new BooleanBuilder();
@@ -50,12 +49,11 @@ public class ReportsController {
             where.and(m.user.id.eq(sec.getUserId()));
 
         return query
-            .select(m.mealDate, m.calories.sum())
             .from(m)
             .where(where)
             .groupBy(m.mealDate)
             .orderBy(m.mealDate.asc())
-            .fetch()
+            .list(m.mealDate, m.calories.sum())
             .stream()
             .map((tuple ->
                 JsonNodeFactory.instance
@@ -83,7 +81,7 @@ public class ReportsController {
      */
     @RequestMapping("/mealCount")
     public ObjectNode mealCount() {
-        JPAQuery<Object> query = new JPAQuery<>(entityManager);
+        JPAQuery query = new JPAQuery(entityManager);
         QMeal m = QMeal.meal;
 
         BooleanBuilder where = new BooleanBuilder();
@@ -92,10 +90,9 @@ public class ReportsController {
         }
 
         Long count = query
-            .select(m.count())
             .from(m)
             .where(where)
-            .fetchOne();
+            .singleResult(m.count());
 
         return JsonNodeFactory.instance.objectNode()
             .put("mealCount", count);

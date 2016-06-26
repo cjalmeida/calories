@@ -1,25 +1,32 @@
 import {Component, OnInit} from '@angular/core';
-import {Meals, Users, User, SearchOpts} from "../../../resources";
+import {Meals, SearchOpts} from "../../../resources";
 import {Observable} from "rxjs/Observable";
 import {QueryParams} from '@ngrx/router';
+import {AuthService} from "../../../services/auth.service";
+import {User} from "../../../services/user.mixin";
 
 @Component({
   moduleId: module.id,
-  template: require('./user.list.html')
+  template: require('./meals.list.html')
 })
-export class UserListComponent implements OnInit {
+export class MealListComponent implements OnInit {
 
-  res:{_embedded:{users:[any]}, page:any};
+  res:{_embedded:{meals:[any]}, page:any};
 
   saved$: Observable<boolean>;
   deleted$: Observable<boolean>;
 
   search = new SearchOpts();
 
-  constructor(private users: Users, routeParams:QueryParams) {
+  loggedUser: User;
+
+  constructor(private meals: Meals, routeParams:QueryParams, auth:AuthService) {
     this.saved$ = routeParams.pluck<boolean>('saved');
     this.deleted$ = routeParams.pluck<boolean>('deleted');
     this.search.projection = 'list';
+    auth.getCurrentUser().then(
+      (user) => this.loggedUser = user
+    );
   }
 
   ngOnInit() {
@@ -27,7 +34,7 @@ export class UserListComponent implements OnInit {
   }
 
   list() {
-    this.users.list(this.search).then((res) => {
+    this.meals.list(this.search).then((res) => {
       this.res = res;
     });
   }
@@ -40,7 +47,7 @@ export class UserListComponent implements OnInit {
     return this.res && (this.res.page.number + 1) < this.res.page.totalPages;
   }
 
-  prev() {
+  previous() {
     this.search.page--;
     this.list();
   }

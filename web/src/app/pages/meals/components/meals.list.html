@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <div class="row">
+    <div class="col-xl-12">
+      <h2 class="page-header">
+        Meals
+      </h2>
+      <ol class="breadcrumb">
+        <li>
+          <i class="fa fa-dashboard"></i> <a href="Javascript:void(0);" linkTo="/dashboard/home">Dashboard</a>
+        </li>
+        <li class="active">
+          <i class="fa fa-cutlery"></i> Meals
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-xl-12 col-lg-12">
+      <div class="card card-block">
+        <div class="row" *ngIf="saved$ | async">
+          <div class="alert alert-info" style="">
+            Meal saved!
+          </div>
+        </div>
+        <div class="row" *ngIf="deleted$ | async">
+          <div class="alert alert-info" style="">
+            Meal deleted!
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-inverse">
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Calories</th>
+              <th *ngIf="loggedUser?.hasRole('ROLE_ADMIN')">User</th>
+              <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let m of res?._embedded?.meals">
+              <th scope="row"><a [linkTo]="'/dashboard/meals/' + m.id">{{m.mealDate}}</a></th>
+              <td><a [linkTo]="'/dashboard/meals/' + m.id">{{m.mealTime}}</a></td>
+              <td>{{m.calories}}</td>
+              <th *ngIf="loggedUser?.hasRole('ROLE_ADMIN')">{{m.user}}</th>
+              <td>{{m.description}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="row" *ngIf="hasPrev() || hasNext()">
+          <div class="col-lg-6 center-block" style="text-align: center; float: none">
+            <a href="javascript:;" *ngIf="hasPrev()" (click)="previous()"><i class="fa fa-angle-left"></i> previous</a>
+            <span>{{res.page.number}}</span>
+            <a href="javascript:;" *ngIf="hasNext()" (click)="next()">next <i class="fa fa-angle-right"></i></a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-lg-12">
+            <input type="button" linkTo="/dashboard/meals/new" class="btn btn-primary" value="Add Meal">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

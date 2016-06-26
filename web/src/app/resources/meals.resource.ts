@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core'
 import {HttpClient} from "../services/httpclient.service";
 import {RequestOptionsArgs, URLSearchParams} from '@angular/http'
 import * as moment  from 'moment';
+import {SearchOpts} from "./searchopts.ts";
+import {Observable} from "rxjs/Observable";
+
 
 type Moment = moment.Moment;
 
@@ -10,6 +13,38 @@ export class Meals {
 
   constructor(private http:HttpClient) {
 
+  }
+
+  find(id:number):Promise<any> {
+    return this.http
+      .get(`/meals/${id}`)
+      .map((res) => res.json())
+      .toPromise();
+  }
+
+  list(search?: SearchOpts):Promise<any> {
+    search = search || new SearchOpts();
+    return this.http
+      .get('/meals', {search: search.toParams()})
+      .map((res) => res.json())
+      .toPromise();
+  }
+
+  save(meal:any):Promise<any> {
+    delete meal['_links'];
+
+    let body = JSON.stringify(meal);
+    if (meal.id) {
+      return this.http.patch(`/meals/${meal.id}`, body).toPromise();
+    } else {
+      return this.http.post(`/meals`, body).toPromise();
+    }
+  }
+
+  remove(id:number):Promise<any> {
+    return this.http
+      .delete(`/users/${id}`)
+      .toPromise();
   }
 
   getCaloriesPerDay(_start:Moment, _end:Moment):Promise<any> {

@@ -1,18 +1,18 @@
 package tt.calories.domain;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.querydsl.core.types.dsl.*;
+import com.mysema.query.types.path.*;
 
-import com.querydsl.core.types.PathMetadata;
+import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.querydsl.core.types.Path;
+import com.mysema.query.types.Path;
 
 
 /**
  * QRole is a Querydsl query type for Role
  */
-@Generated("com.querydsl.codegen.EntitySerializer")
+@Generated("com.mysema.query.codegen.EntitySerializer")
 public class QRole extends EntityPathBase<Role> {
 
     private static final long serialVersionUID = 865532742L;
@@ -33,7 +33,7 @@ public class QRole extends EntityPathBase<Role> {
         super(path.getType(), path.getMetadata());
     }
 
-    public QRole(PathMetadata metadata) {
+    public QRole(PathMetadata<?> metadata) {
         super(Role.class, metadata);
     }
 

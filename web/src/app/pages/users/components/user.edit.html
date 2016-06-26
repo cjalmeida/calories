@@ -23,32 +23,32 @@
   <div class="row" *ngIf="user">
     <div class="col-xl-6 col-lg-12">
       <form role="form">
-        <fieldset class="form-group required">
+        <fieldset class="form-group required" data-prop="fullName">
           <label>Name</label>
           <input #name type="text" [(ngModel)]="user.fullName" class="form-control">
         </fieldset>
-        <fieldset class="form-group required">
+        <fieldset class="form-group required" data-prop="email">
           <label>Email</label>
           <input type="email" [(ngModel)]="user.email" class="form-control">
         </fieldset>
-        <fieldset class="form-group">
+        <fieldset class="form-group" data-prop="password">
           <label>Password</label>
           <input type="password" [(ngModel)]="user.password" class="form-control" style="width: 50%">
           <span class="small">(leave empty for no change)</span>
         </fieldset>
 
-        <fieldset class="form-group required">
+        <fieldset class="form-group required" data-prop="userTimezone">
           <label>Timezone</label>
           <input type="text" [(ngModel)]="user.userTimezone" class="form-control" style="width: 33%">
         </fieldset>
 
-        <fieldset class="form-group">
+        <fieldset class="form-group" data-prop="caloriesPerDay">
           <label>Calories per Day</label>
           <input type="text" [(ngModel)]="user.caloriesPerDay" class="form-control" style="width: 33%">
         </fieldset>
 
         <div *ngIf="loggedUser.hasRole('ROLE_ADMIN', 'ROLE_MANAGER')">
-          <div class="form-group">
+          <div class="form-group" data-prop="active">
             <label>Is active?</label>
             <div class="radio">
               <label (click)="user.active = true">
@@ -62,7 +62,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" data-prop="roles">
             <label>Roles</label>
             <div class="checkbox" *ngFor="let role of roles">
               <label>
@@ -71,8 +71,26 @@
             </div>
           </div>
         </div>
-        <button type="submit" (click)="submit()" class="btn btn-primary">Submit</button>
+        <button type="submit" (click)="save()" class="btn btn-primary">Save</button>
+        <button type="button" (click)="deleteModal.show()" class="btn btn-default">Remove</button>
       </form>
     </div>
   </div>
 </div>
+<bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" >
+   <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="deleteModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Confirm</h4>
+      </div>
+      <div class="modal-body">
+        Confirm the removal of user "{{user.fullName}}" by clicking below:
+        <button type="button" (click)="delete()" class="btn btn-default">Yes, I confirm.</button>
+        <button type="button" (click)="deleteModal.hide()" class="btn btn-default">No, forget about it.</button>
+      </div>
+    </div>
+  </div>
+</bsModal>

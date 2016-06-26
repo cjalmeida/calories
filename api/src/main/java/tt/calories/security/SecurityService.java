@@ -61,25 +61,22 @@ public class SecurityService {
     }
 
     /**
-     * Check if the logged in user is and admin or userId equals to
-     * the logged user id.
+     * Check if userId equals to the logged user id.
      */
     public boolean checkUser(Long userId) {
         User currentUser = getCurrentUser();
         if (currentUser == null) return false;
-        return isAdmin() || userId.equals(getCurrentUser().getId());
+        if (userId == null) return false;
+        return userId.equals(getCurrentUser().getId());
     }
 
     /**
-     * Check if the logged in user is and admin or ALL userIds equals to
-     * the logged user id.
+     * Check if ALL userIds equals to the logged user id.
      */
     public boolean checkUser(Iterable<? extends Long> userIds) {
         User currentUser = getCurrentUser();
         if (currentUser == null) return false;
-
-        if (isAdmin()) return true;
-
+        if (userIds == null) return false;
         Long currentUserId = currentUser.getId();
         for (Long id : userIds) {
             if (!id.equals(currentUserId)) {
@@ -91,8 +88,8 @@ public class SecurityService {
     }
 
     /**
-     * Loads the entity and check if the same user. We navigate the object graph
-     * using the userIdPath string.
+     * Loads the entity related user and check if id matches logged in user.
+     * We navigate the object graph using the userIdPath string.
      */
     public boolean checkUser(Class<?> clazz, Serializable entityId, String userIdPath) {
         Object entity = entityManager.find(clazz, entityId);
