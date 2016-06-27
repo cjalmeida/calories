@@ -16,6 +16,33 @@
     </div>
   </div>
 
+
+  <div class="row">
+    <div class="col-xl-12">
+      <a href="javascript:;" (click)="showFilters = !showFilters">Filters</a>
+      <div *ngIf="showFilters" class="card card-block">
+        <form #form="ngForm">
+          <fieldset class="form-group">
+            <span>Meal Date between</span>
+            <input type="text" [(ngModel)]="search.dateStart" pattern="\d{4}-\d{2}-\d{2}"> and
+            <input type="text" [(ngModel)]="search.dateEnd" pattern="\d{4}-\d{2}-\d{2}">
+          </fieldset>
+          <fieldset class="form-group">
+            <span>Meal Time between</span>
+            <input type="text" [(ngModel)]="search.timeStart" pattern="\d{2}:\d{2}:\d{2}"> and
+            <input type="text" [(ngModel)]="search.timeEnd" pattern="\d{2}:\d{2}:\d{2}">
+          </fieldset>
+          <div class="row">
+            <div class="col-xl-12">
+              <input type="submit" (click)="applyFilters()" value="Apply" class="btn btn-primary">
+              <input type="button" (click)="resetFilters()" value="Reset" class="btn btn-default">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- /.row -->
   <div class="row">
     <div class="col-xl-12 col-lg-12">

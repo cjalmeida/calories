@@ -14,8 +14,8 @@ import {UserListComponent} from "./app/pages/users/components/user.list";
 import {UserEditComponent} from "./app/pages/users/components/user.edit";
 import {config} from './config';
 import './styles/main.scss'
-import {MealListComponent} from "./app/pages/meals/components/meals.list";
-import {MealEditComponent} from "./app/pages/meals/components/meals.edit";
+import {MealListComponent} from "./app/pages/meals/components/meal.list";
+import {MealEditComponent} from "./app/pages/meals/components/meal.edit";
 
 
 const routes:Routes = [

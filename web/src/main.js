@@ -15,8 +15,8 @@ var user_list_1 = require("./app/pages/users/components/user.list");
 var user_edit_1 = require("./app/pages/users/components/user.edit");
 var config_1 = require('./config');
 require('./styles/main.scss');
-var meals_list_1 = require("./app/pages/meals/components/meals.list");
-var meals_edit_1 = require("./app/pages/meals/components/meals.edit");
+var meal_list_1 = require("./app/pages/meals/components/meal.list");
+var meal_edit_1 = require("./app/pages/meals/components/meal.edit");
 var routes = [
     {
         path: '/dashboard', component: dashboard_1.DashboardComponent,
@@ -25,8 +25,8 @@ var routes = [
             { path: '/home', component: home_1.HomeComponent },
             { path: '/users/:id', component: user_edit_1.UserEditComponent },
             { path: '/users', component: user_list_1.UserListComponent },
-            { path: '/meals/:id', component: meals_edit_1.MealEditComponent },
-            { path: '/meals', component: meals_list_1.MealListComponent },
+            { path: '/meals/:id', component: meal_edit_1.MealEditComponent },
+            { path: '/meals', component: meal_list_1.MealListComponent },
         ]
     },
     { path: '/login', component: login_1.LoginComponent },

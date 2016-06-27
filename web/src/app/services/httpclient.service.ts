@@ -3,6 +3,9 @@ import {Http, ConnectionBackend, RequestOptions, Headers, RequestOptionsArgs, Re
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 
+/**
+ * HTTP client that provide token authentication and hot observers.
+ */
 @Injectable()
 export class HttpClient {
 
@@ -37,7 +40,7 @@ export class HttpClient {
 
     let _call = this.http.request(this.base + path, options);
 
-    _call.subscribe(null, (err) => {
+    _call.do(null, (err) => {
       if (err.status == 401) {
         // Notify the 401 error
         this.unauthorizedError.next(err);

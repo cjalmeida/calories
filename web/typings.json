@@ -7,7 +7,7 @@
     "jquery": "registry:dt/jquery#1.10.0+20160417213236",
     "jwt-decode": "registry:dt/jwt-decode#1.4.0+20160317120654",
     "lodash": "registry:dt/lodash#3.10.0+20160619033623",
-    "node": "registry:dt/node#4.0.0+20160501135006"
+    "node": "registry:dt/node#4.0.0+20160501135006",
   },
   "dependencies": {
     "chart.js": "registry:npm/chart.js#2.1.4+20160615174920"

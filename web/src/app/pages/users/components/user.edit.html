@@ -22,33 +22,33 @@
   <!-- /.row -->
   <div class="row" *ngIf="user">
     <div class="col-xl-6 col-lg-12">
-      <form role="form">
-        <fieldset class="form-group required" data-prop="fullName">
+      <form role="form" novalidate [ngFormModel]="form" (ngSubmit)="save(form)">
+        <fieldset class="form-group required" >
           <label>Name</label>
-          <input #name type="text" [(ngModel)]="user.fullName" class="form-control">
+          <input type="text" ngControl="fullName" [(ngModel)]="user.fullName" class="form-control">
         </fieldset>
-        <fieldset class="form-group required" data-prop="email">
+        <fieldset class="form-group required" >
           <label>Email</label>
-          <input type="email" [(ngModel)]="user.email" class="form-control">
+          <input type="email" ngControl="email" [(ngModel)]="user.email" class="form-control">
         </fieldset>
-        <fieldset class="form-group" data-prop="password">
+        <fieldset class="form-group" >
           <label>Password</label>
-          <input type="password" [(ngModel)]="user.password" class="form-control" style="width: 50%">
+          <input type="password" ngControl="plainPassword" [(ngModel)]="user.plainPassword" class="form-control" style="width: 50%">
           <span class="small">(leave empty for no change)</span>
         </fieldset>
 
-        <fieldset class="form-group required" data-prop="userTimezone">
+        <fieldset class="form-group required" >
           <label>Timezone</label>
-          <input type="text" [(ngModel)]="user.userTimezone" class="form-control" style="width: 33%">
+          <input type="text" ngControl="userTimezone" [(ngModel)]="user.userTimezone" class="form-control" style="width: 33%">
         </fieldset>
 
-        <fieldset class="form-group" data-prop="caloriesPerDay">
+        <fieldset class="form-group" >
           <label>Calories per Day</label>
-          <input type="text" [(ngModel)]="user.caloriesPerDay" class="form-control" style="width: 33%">
+          <input type="text" pattern="[0-9]*" ngControl="caloriesPerDay" [(ngModel)]="user.caloriesPerDay" class="form-control" style="width: 33%">
         </fieldset>
 
-        <div *ngIf="loggedUser.hasRole('ROLE_ADMIN', 'ROLE_MANAGER')">
-          <div class="form-group" data-prop="active">
+        <div *ngIf="loggedUser?.hasRole('ROLE_ADMIN', 'ROLE_MANAGER')">
+          <div class="form-group" >
             <label>Is active?</label>
             <div class="radio">
               <label (click)="user.active = true">
@@ -62,7 +62,7 @@
             </div>
           </div>
 
-          <div class="form-group" data-prop="roles">
+          <div class="form-group"  *ngIf="loggedUser?.hasRole('ROLE_ADMIN', 'ROLE_MANAGER')">
             <label>Roles</label>
             <div class="checkbox" *ngFor="let role of roles">
               <label>
@@ -71,13 +71,13 @@
             </div>
           </div>
         </div>
-        <button type="submit" (click)="save()" class="btn btn-primary">Save</button>
-        <button type="button" (click)="deleteModal.show()" class="btn btn-default">Remove</button>
+        <button [disabled]="!form.valid" type="submit" class="btn btn-primary">Save</button>
+        <button *ngIf="(id$ | async) !== 'new' && loggedIn.hasRole('ROLE_ADMIN', 'ROLE_MANAGER')" type="button" (click)="deleteModal.show()" class="btn btn-default">Remove</button>
       </form>
     </div>
   </div>
 </div>
-<bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" >
+<bsModal #deleteModal class="modal fade" tabindex="-1" role="dialog" >
    <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -87,7 +87,7 @@
         <h4 class="modal-title">Confirm</h4>
       </div>
       <div class="modal-body">
-        Confirm the removal of user "{{user.fullName}}" by clicking below:
+        Confirm the removal of user "{{user?.fullName}}" by clicking below:
         <button type="button" (click)="delete()" class="btn btn-default">Yes, I confirm.</button>
         <button type="button" (click)="deleteModal.hide()" class="btn btn-default">No, forget about it.</button>
       </div>

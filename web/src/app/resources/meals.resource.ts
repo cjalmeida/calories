@@ -15,9 +15,11 @@ export class Meals {
 
   }
 
-  find(id:number):Promise<any> {
+  find(id:number, projection:string=undefined):Promise<any> {
+    let search = new SearchOpts();
+    search.projection = projection;
     return this.http
-      .get(`/meals/${id}`)
+      .get(`/meals/${id}`, {search: search.toParams()})
       .map((res) => res.json())
       .toPromise();
   }
@@ -43,7 +45,7 @@ export class Meals {
 
   remove(id:number):Promise<any> {
     return this.http
-      .delete(`/users/${id}`)
+      .delete(`/meals/${id}`)
       .toPromise();
   }
 

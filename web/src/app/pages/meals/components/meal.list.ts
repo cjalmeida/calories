@@ -4,10 +4,12 @@ import {Observable} from "rxjs/Observable";
 import {QueryParams} from '@ngrx/router';
 import {AuthService} from "../../../services/auth.service";
 import {User} from "../../../services/user.mixin";
+import {CollapseDirective} from 'ng2-bootstrap';
 
 @Component({
   moduleId: module.id,
-  template: require('./meals.list.html')
+  template: require('./meal.list.html'),
+  directives:[CollapseDirective]
 })
 export class MealListComponent implements OnInit {
 
@@ -16,17 +18,20 @@ export class MealListComponent implements OnInit {
   saved$: Observable<boolean>;
   deleted$: Observable<boolean>;
 
-  search = new SearchOpts();
+  search:SearchOpts;
 
   loggedUser: User;
+
+  showFilters:boolean;
 
   constructor(private meals: Meals, routeParams:QueryParams, auth:AuthService) {
     this.saved$ = routeParams.pluck<boolean>('saved');
     this.deleted$ = routeParams.pluck<boolean>('deleted');
-    this.search.projection = 'list';
+    this.resetFilters();
     auth.getCurrentUser().then(
       (user) => this.loggedUser = user
     );
+    this.showFilters = false;
   }
 
   ngOnInit() {
@@ -54,6 +59,24 @@ export class MealListComponent implements OnInit {
 
   next() {
     this.search.page++;
+    this.list();
+  }
+
+  applyFilters() {
+    for (let k in this.search) {
+      let v = this.search[k]
+      if (v === '' || v === undefined || v === null) {
+        delete this.search[k];
+      }
+    }
+    this.search.page = 0;
+    this.list();
+  }
+
+  resetFilters() {
+    this.search = new SearchOpts();
+    this.search.projection = 'list';
+    this.search.sort = ['mealDate,desc', 'mealTime,desc'];
     this.list();
   }
 

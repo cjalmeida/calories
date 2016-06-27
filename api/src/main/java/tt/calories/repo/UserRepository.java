@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import tt.calories.domain.User;
 
+import javax.validation.Valid;
+
 /**
  * Spring Data repository for Users.
  *
@@ -27,7 +29,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') || @sec.checkUser(#user.id)")
-    <S extends User> S save(@P("user") S user);
+    <S extends User> S save(@Valid @P("user") S user);
 
     @RestResource(exported = false)
     @Override

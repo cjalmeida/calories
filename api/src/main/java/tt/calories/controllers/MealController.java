@@ -55,15 +55,6 @@ public class MealController {
         @RequestParam(required = false) java.sql.Time timeEnd
     ) throws Exception {
 
-
-        if ((dateStart == null) != (dateEnd == null)) {
-            throw new BadRequestException("Both or neither 'dateStart' and 'dateEnd' must be present");
-        }
-
-        if ((timeStart == null) != (timeEnd == null)) {
-            throw new BadRequestException("Both or neither 'timeStart' and 'timeEnd' must be present");
-        }
-
         QMeal m = QMeal.meal;
         BooleanBuilder where = new BooleanBuilder();
 
@@ -72,28 +63,20 @@ public class MealController {
         }
 
         if (dateStart != null) {
-            where.and(m.mealDate.between(dateStart, dateEnd));
+            where.and(m.mealDate.goe(dateStart));
+        }
+
+        if (dateEnd != null) {
+            where.and(m.mealDate.loe(dateEnd));
         }
 
         if (timeStart != null) {
-            where.and(m.mealTime.between(timeStart, timeEnd));
+            where.and(m.mealTime.goe(timeStart));
         }
 
-
-//        JPQLQuery q = new JPAQuery(entityManager);
-//
-//        q = q.from(m).where(where);
-//
-//        PathBuilder<Meal> pb = new PathBuilder<Meal>(Meal.class, "m");
-//        Querydsl springQuerydsl = new Querydsl(entityManager, pb);
-//        if (page != null) {
-//            q = springQuerydsl.applyPagination(page, q);
-//        }
-//        if (page != null && page.getSort() != null) {
-//            q = springQuerydsl.applySorting(page.getSort(), q);
-//        }
-//
-//        List<Meal> res = q.list(m);
+        if (timeEnd != null) {
+            where.and(m.mealTime.loe(timeEnd));
+        }
 
         Page<Meal> resPage = mealRepository.findAll(where, page);
         return pagedResourcesAssembler.toResource(resPage, resourceAssembler);

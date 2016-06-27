@@ -167,7 +167,6 @@ a:hover{
     -ms-overflow-x: hidden;
         overflow-x: hidden;
     position: relative;
-    z-index: 1;
 }
 .chat-panel{
     .chat-dropdown{
@@ -476,10 +475,6 @@ a:hover{
   color: #FF0000;
 }
 
-.form-group.error > label {
-  color: #FF0000;
-}
-
-.form-group.error input {
+input.ng-invalid.ng-touched {
   border-color: #FF0000
 }
