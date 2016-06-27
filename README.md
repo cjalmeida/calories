@@ -76,9 +76,9 @@ On another terminal window, use NPM to download the dependencies and start the a
 
 After initialization, the web interface should be available at `http://localhost:8080/`. You may login with the credentials below for each role:
 
-* `admin@example.com/admin` as administrator,
-* `manager@example.com` as a user manager,
-* `dummy1@example.com` as regular user (with some data).
+* User `admin@example.com`, password `admin`: administrator role,
+* User `manager@example.com`, password `dummy`: user manager role,
+* User `dummy1@example.com`, password `dummy`: regular user (with some data).
 
 After login, a JWT token is stored and will persist the session for 10 days. You may logout by clicking on the user name on the top-right corner of the dashboard. You may click the "Signup" button to sign-up as new regular user.
 
