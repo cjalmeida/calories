@@ -11,6 +11,7 @@ web/build
 web/node_modules
 web/bower_components
 api/db
+npm-debug.log
 
 
 

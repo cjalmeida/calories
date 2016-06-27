@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Cloves Almeida. All rights reserved.
+ */
+
 package tt.calories.controllers;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Cloves Almeida. All rights reserved.
+ */
+
 package tt.calories.config;
 
 import org.springframework.context.annotation.Bean;
@@ -11,7 +15,7 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 /**
- * TODO: description
+ * Configure Spring Data Rest
  *
  * @author Cloves Almeida
  * @version 1.0.0

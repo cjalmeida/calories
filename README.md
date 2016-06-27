@@ -1,100 +1,106 @@
-DBAK - The Distributed LAN Backup Tool
-======================================
-
-Note: Design document available at `doc/design/ApplicationDesign.docx`
+Calories App
+============
 
 Overview
 --------
-This system has the goal of providing a distributed LAN backup tool with central administration. The clients
-are Windows machines that run a backup operation based on a server-stored configuration. The administration
-is done through a Web interface.
+This system has the goal of providing a simple Single-Page-Application where users may log meals and calories.
 
-The system consists of three main modules:
+The system consists of two modules:
 
- - `api`: A REST server hosting machine configuration.
- - `client`: A desktop Java application to be installed on client machines.
- - `web`: The web admin interface.
+ - `api`: A backend REST server.
+ - `web`: The web interface for users and administrators.
 
-The API server and client application are built using Java 8, Spring Framework 4 and Gradle 2.13 as 
-the build tool.
+Stack
+-----
+The API server is built using Java 8, Spring Framework 4 and Gradle 2.14 as the build tool.
+Additionally, I used Spring Data REST on top of Spring MVC to provide a HATEOAS capable REST layer. To
+simplify development, the system uses the H2 embedded database, however we're using JPA to make
+the server database agnostic.
+
+The front-end was developed using Typescript and Angular 2.0.0-RC2. Because the Angular 2 router component
+is not yet stable, I opted to use the external '@ngrx/router'. For a better look-and-feel, I used the
+SB-Admin template, which is based on Bootstrap and uses SASS for styling. Webpack is used as the build
+tool for the front-end.
 
 
 Dependencies
 ------------
 
+The software was developed and fully tested on Ubuntu 14.04 LTS system. However, it has no
+OS specific dependencies and should work on Mac and Windows.
+
 ### Java 8
 
-Both the `client` and `api` modules depends on a recent Oracle Java 8 installation. Use your 
-system installer or download from the 
+The `api` modules depends on a recent Oracle Java 8 installation. Use your system installer or
+download from the
 [Oracle website](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
-### NodeJS 5
+### NodeJS 6
 
-The `web` module depends on NodeJS v5. We recommend using the 
-[Node Version Manager](https://github.com/creationix/nvm). 
-If you're on Windows, [use this version](https://github.com/coreybutler/nvm-windows)  
+The `web` module depends on NodeJS v6. We recommend using the
+[Node Version Manager](https://github.com/creationix/nvm).
+If you're on Windows, [use this version](https://github.com/coreybutler/nvm-windows)
 
 ### Libraries
 
-All library dependencies are fully managed via Gradle, NPM. We provide a Gradle wrapper to automatically
-download a suitable Gradle version on first run. The NPM tools is part of the NodeJS distribution.
+All library dependencies are fully managed via Gradle and NPM. We provide a Gradle wrapper to automatically
+download a suitable Gradle version on first run. The NPM tool is part of the NodeJS distribution.
 
 Running Automated Tests
 -----------------------
 
-We provide tests for the `api` and `client` modules (check the design doc on why `web` has no tests).
-Just run the command below in the root of the project:
+We provide tests for the REST back-end. Check the files under `api/src/test/groovy`.
+
+To execute the tests, just run the command below in the root of the `api` folder:
 
 ```
+> cd api
 > ./gradlew test
 ```
 
-After run, test reports are available under `<module>/build/reports/tests/index.html` where `<module>` is
-either `api` or `client`. Coverage report can be generated with the command:
+After run, test reports are available under `build/reports/tests/index.html`.
+Coverage report can be generated with the command below and will be available at
+`build/reports/jacoco/test/html/index.html`
 
 ```
+> cd api
 > ./gradlew jacocoTestReport
 ```
 
-Then reports will be available under `<module>/build/reports/jacoco/test/html/index.html`
+Then reports will be available under `api/build/reports/jacoco/test/html/index.html`
 
 
-Running (test/development)
---------------------------
+Running the application (development)
+-------------------------------------
 
-If running for the first time, install the NodeJS dependencies for the `web` module.
+Run the server by issuing the commands below. The first time will download all dependencies
+and may take a long time. The default configuration will also load the demo data automatically.
+```
+> cd api
+> ./gradlew bootRun
+```
+
+On another terminal window, use NPM to download the dependencies and start the application.
 ```
 > cd web
 > npm install
-> cd ..
+> npm start
 ```
 
-Load the test data if running for the first time or to restore the DB to the initial test state
-```
-> ./gradlew api:loadTestData
-```
+After initialization, the web interface should be available at `http://localhost:8080/`.
+You may login with the credentials below for each role:
 
-Deploy web assets to the server and start it.
-```
-> ./gradlew webDeploy api:bootRun
-```
+* `admin@example.com/admin` as administrator,
+* `manager@example.com` as a user manager,
+* `dummy1@example.com` as regular user (with some data).
 
-After initialization, the web admin interface should be available at `http://localhost:9000/`.
-You may login with `admin/admin` as administrator, or `machine1/testpass` as a machine user.
+After login, a JWT token is stored and will persist the session for 10 days. You may logout by clicking on
+the user name on the top-right corner of the dashboard. You may click the "Signup" button to
+sign-up as new regular user.
 
-To demo the client application, first create a machine configuration in the web admin interface
-with values suited for your environment. Then create a distribution ZIP file and copy it over 
-to the test machine.
-```
-> ./gradle client:distZip
-```
+To "reset" the database, just remove the `api/db` directory. It will be recreated with demo data the next
+time the server is started.
 
-The ZIP file will be named `client/build/distributions/dbak-client.zip`. Unzip it anywhere and edit the 
-`config/application.properties` file to match the configuration you just created. Open a `cmd.exe` window
-and run:
-```
-> cd path\to\dbak-client
-> bin\client.bat
-```
+You can change back-end configuration in the `api/config/application.properties` file. The front-end
+configuration is located in `web/src/config.ts`.
 
-The application log should connect and show the next fire time for the scheduled triggers.

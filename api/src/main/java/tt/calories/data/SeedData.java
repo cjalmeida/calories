@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Cloves Almeida. All rights reserved.
+ */
+
 package tt.calories.data;
 
 import org.slf4j.Logger;
@@ -14,7 +18,7 @@ import javax.persistence.EntityManager;
 /**
  * Class holding required seed data.
  *
- * To simplify testing, some data is shared as (friend) static fields.
+ * To simplify testing, some data is shared as static fields.
  *
  * @author Cloves Almeida
  * @version 1.0.0

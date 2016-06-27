@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Cloves Almeida. All rights reserved.
+ */
+
 package tt.calories.security;
 
 import com.auth0.jwt.JWTSigner;
@@ -26,7 +30,7 @@ import java.util.Map;
  * Custom service and servlet filter for dealing with JWT tokens. See settings for security secret
  * and expiration date.
  *
- * If a valid token is found, it creates a correct Authentication object in the security context.
+ * If a valid token is found, it creates a pre-authenticated Authentication object in the security context.
  *
  * @author Cloves Almeida
  * @version 1.0.0

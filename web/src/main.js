@@ -3,7 +3,7 @@ var common_1 = require('@angular/common');
 var core_1 = require('@angular/core');
 var platform_browser_dynamic_1 = require('@angular/platform-browser-dynamic');
 var http_1 = require('@angular/http');
-var app_component_1 = require('./app/layouts/base/app.component');
+var app_1 = require('./app/layouts/base/components/app');
 var index_1 = require('./app/services/index');
 var router_1 = require('@ngrx/router');
 var dashboard_1 = require('./app/layouts/dashboard/components/dashboard');
@@ -33,11 +33,15 @@ var routes = [
     { path: '/signup', component: signup_1.SignupComponent },
     { path: '/', redirectTo: '/dashboard/home' }
 ];
+// Webpack will provide the correct values below.
+if (process.env.ENV === 'build') {
+    core_1.enableProdMode();
+}
 /**
  * Bootstraps the application and makes the ROUTER_PROVIDERS and the APP_BASE_HREF available to it.
  * @see https://angular.io/docs/ts/latest/api/platform-browser-dynamic/index/bootstrap-function.html
  */
-platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, [
+platform_browser_dynamic_1.bootstrap(app_1.AppComponent, [
     http_1.HTTP_PROVIDERS, index_1.AuthService, index_1.HttpClient, resources_1.Meals, resources_1.Users, resources_1.Roles, index_1.AuthGuard,
     router_1.provideRouter(routes),
     core_1.provide(common_1.APP_BASE_HREF, { useValue: '/' }),

@@ -20,10 +20,10 @@
   </div>
 
   <!-- /.row -->
-  <div class="row" *ngIf="meal && loggedUser && users">
+  <div class="row" *ngIf="meal && loggedUser">
     <div class="col-xl-6 col-lg-12">
       <form role="form" [ngFormModel]="form" (ngSubmit)="save(form)">
-        <fieldset class="form-group" data-prop="user" *ngIf="loggedUser?.hasRole('ROLE_ADMIN')">
+        <fieldset class="form-group" data-prop="user" *ngIf="loggedUser?.hasRole('ROLE_ADMIN') && users">
           <label>User</label>
           <select class="form-control" [(ngModel)]="meal.user">
             <option *ngFor="let u of users" [value]="u.href">{{u.fullName}}</option>

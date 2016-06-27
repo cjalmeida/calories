@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
-import {CardDirective} from "../../../directives/card/components/card";
-import {ChartDirective} from '../../../directives/chart/components/chart';
+import {CardDirective} from "../../../widgets/card/components/card";
+import {ChartDirective} from '../../../widgets/chart/components/chart';
 import {User} from "../../../services/user.mixin";
 import {Meals, Users} from "../../../resources";
 import {Router} from '@ngrx/router';

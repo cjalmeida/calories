@@ -1,19 +1,18 @@
+/*
+ * Copyright (c) 2016. Cloves Almeida. All rights reserved.
+ */
+
 package tt.calories.controllers;
 
 import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.path.PathBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,10 +23,9 @@ import tt.calories.repo.MealRepository;
 import tt.calories.security.SecurityService;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 /**
- * TODO
+ * Custom controller for Meals
  */
 @RepositoryRestController
 @RequestMapping(path = "/meals")
@@ -35,9 +33,6 @@ public class MealController {
 
     @Autowired
     SecurityService sec;
-
-    @Autowired
-    EntityManager entityManager;
 
     @Autowired
     MealRepository mealRepository;

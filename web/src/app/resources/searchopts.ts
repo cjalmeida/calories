@@ -1,6 +1,9 @@
 import {URLSearchParams} from '@angular/http';
 import * as _ from 'lodash';
 
+/**
+ * Query parameters for searching paged Spring Data REST resources.
+ */
 export class SearchOpts {
 
   constructor(public page:number = 0,
@@ -10,6 +13,9 @@ export class SearchOpts {
 
   }
 
+  /**
+   * Convert to @angular/http search parameters.
+   */
   toParams():URLSearchParams {
     let p = new URLSearchParams();
     for (let k in this) {

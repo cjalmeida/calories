@@ -6,9 +6,7 @@ import {Component, ViewEncapsulation, ViewContainerRef} from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   directives: [],
   template: `
-
   <route-view></route-view>
-
   `
 })
 export class AppComponent {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Cloves Almeida. All rights reserved.
+ */
+
 package tt.calories.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;

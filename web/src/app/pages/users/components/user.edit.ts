@@ -5,8 +5,9 @@ import {RouteParams, Router} from '@ngrx/router';
 import {Observable} from "rxjs/Observable";
 import * as _ from 'lodash';
 import {AuthService} from "../../../services/auth.service";
-import {MODAL_DIRECTVES, BS_VIEW_PROVIDERS} from 'ng2-bootstrap/ng2-bootstrap';
+import {MODAL_DIRECTVES, BS_VIEW_PROVIDERS, ModalDirective} from 'ng2-bootstrap/ng2-bootstrap';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
+import {extractId} from "../../../resources/utils";
 
 @Component({
   moduleId: module.id,
@@ -24,6 +25,10 @@ export class UserEditComponent implements OnInit {
   loggedUser:any;
 
   form:ControlGroup;
+
+  @ViewChild(ModalDirective)
+  private deleteModal:ModalDirective;
+
 
   constructor(fb:FormBuilder, private _users:Users, private _roles:Roles, routeParams:RouteParams, private _auth:AuthService, private _router:Router) {
     this.id$ = routeParams.pluck<any>('id');
@@ -101,12 +106,19 @@ export class UserEditComponent implements OnInit {
     }
 
     this._users.save(this.user)
-      .then((user) => {
-        if (admin) {
-          this._router.go('/dashboard/users/', {saved: true})
-        } else {
-          this._router.go('/dashboard/home/')
+      .then((res) => {
+        let user = res.json();
+        let p = Promise.resolve(user);
+        if (user.id === this.loggedUser.id) {
+          p = this._auth.reloadUser();
         }
+        p.then(() => {
+          if (admin) {
+            this._router.go('/dashboard/users/', {saved: true})
+          } else {
+            this._router.go('/dashboard/home/')
+          }
+        })
       })
       .catch((err) => {
         if (err.status == 400 && err.errors) {
@@ -120,12 +132,16 @@ export class UserEditComponent implements OnInit {
   delete() {
     this._users.remove(this.user.id)
       .then(() => {
-        this._router.go('/dashboard/users', {deleted: true})
+        this.deleteModal.onHidden.subscribe(() => {
+          this._router.go('/dashboard/users', {deleted: true})
+        });
+        this.deleteModal.hide();
       })
       .catch((err) => {
-        if (err.status == 403) {
-
+        if (err.status == 409) {
+          alert("Cannot delete user. Possibly has dependent meals.")
         }
+        this.deleteModal.hide();
       });
   }
 

@@ -2,7 +2,7 @@ import {APP_BASE_HREF} from '@angular/common';
 import {enableProdMode, provide} from '@angular/core';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {HTTP_PROVIDERS} from '@angular/http';
-import {AppComponent} from './app/layouts/base/app.component';
+import {AppComponent} from './app/layouts/base/components/app';
 import {AuthGuard, AuthService, HttpClient} from './app/services/index'
 import {Routes, provideRouter} from '@ngrx/router';
 import {DashboardComponent} from './app/layouts/dashboard/components/dashboard';
@@ -35,6 +35,10 @@ const routes:Routes = [
   { path: '/', redirectTo: '/dashboard/home'}
 ];
 
+// Webpack will provide the correct values below.
+if (process.env.ENV === 'build') {
+  enableProdMode();
+}
 
 /**
  * Bootstraps the application and makes the ROUTER_PROVIDERS and the APP_BASE_HREF available to it.

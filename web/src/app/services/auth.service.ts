@@ -84,6 +84,11 @@ export class AuthService {
     }
   }
 
+  reloadUser():Promise<User> {
+    this.currentUser = null;
+    return this.getCurrentUser();
+  }
+
 
   /**
    * Returns true if we have a valid token.

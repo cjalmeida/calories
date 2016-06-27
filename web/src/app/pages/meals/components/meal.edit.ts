@@ -28,31 +28,33 @@ export class MealEditComponent implements OnInit {
   form:ControlGroup;
 
   @ViewChild(ModalDirective)
-  private deleteModal: ModalDirective;
+  private deleteModal:ModalDirective;
 
-  constructor(fb:FormBuilder, private _meals:Meals, private _users: Users,  routeParams:RouteParams, private _auth:AuthService, private _router:Router) {
+  constructor(fb:FormBuilder, private _meals:Meals, private _users:Users, routeParams:RouteParams, private _auth:AuthService, private _router:Router) {
     this.id$ = routeParams.pluck<any>('id');
-    _auth.getCurrentUser().then(
-      (user) => this.loggedUser = user
-    );
+    _auth.getCurrentUser()
+      .then((user) => this.loggedUser = user)
+      .then(() => {
+        if (!this.loggedUser.hasRole('ROLE_ADMIN')) return;
+
+        let useropts = new SearchOpts();
+        useropts.projection='select';
+        useropts.size = 999999;
+        useropts.sort = ['fullName,asc'];
+        this._users.list(useropts).then((res) => {
+          this.users = res._embedded.users;
+        });
+      });
 
     this.form = fb.group({
-      'mealDate':['', Validators.compose([Validators.required, Validators.pattern('\\d{4}-\\d{2}-\\d{2}')])],
-      'mealTime':['', Validators.compose([Validators.required, Validators.pattern('\\d{2}:\\d{2}:\\d{2}')])],
-      'calories':['',Validators.compose([Validators.required, Validators.pattern('\\d+')])],
-      'description':['']
+      'mealDate': ['', Validators.compose([Validators.required, Validators.pattern('\\d{4}-\\d{2}-\\d{2}')])],
+      'mealTime': ['', Validators.compose([Validators.required, Validators.pattern('\\d{2}:\\d{2}:\\d{2}')])],
+      'calories': ['', Validators.compose([Validators.required, Validators.pattern('\\d+')])],
+      'description': ['']
     })
   }
 
   ngOnInit() {
-    let useropts = new SearchOpts();
-    useropts.projection='select';
-    useropts.size = 999999;
-    useropts.sort = ['fullName,asc'];
-    this._users.list(useropts).then((res) => {
-      this.users = res._embedded.users;
-    });
-
     this.id$
       .distinctUntilChanged()
       .subscribe((id) => {
@@ -81,12 +83,12 @@ export class MealEditComponent implements OnInit {
         this._router.go('/dashboard/meals/', {saved: true})
       })
       .catch((err) => {
-      if (err.status == 400 && err.errors) {
-        for (let error of err.errors) {
-          form.controls[error.property].setErrors({serverError:true})
+        if (err.status == 400 && err.errors) {
+          for (let error of err.errors) {
+            form.controls[error.property].setErrors({serverError: true})
+          }
         }
-      }
-    });
+      });
   }
 
   delete() {
@@ -98,10 +100,10 @@ export class MealEditComponent implements OnInit {
         this.deleteModal.hide();
       })
       .catch((err) => {
-      if (err.status == 403) {
+        if (err.status == 403) {
 
-      }
-    });
+        }
+      });
   }
 
 }

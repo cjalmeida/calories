@@ -4,7 +4,6 @@
 
 package tt.calories
 
-import com.jayway.restassured.http.ContentType
 import com.jayway.restassured.specification.RequestSpecification
 import groovy.json.JsonBuilder
 import groovy.transform.CompileStatic
@@ -22,9 +21,7 @@ import tt.calories.repo.RoleRepository
 import static com.jayway.restassured.RestAssured.given
 import static com.jayway.restassured.http.ContentType.JSON
 import static org.hamcrest.Matchers.*
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertThat
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*
 
 /**
  * Class holding all REST based integration tests.
@@ -393,18 +390,33 @@ public class RESTIntegrationTests {
     }
 
     @Test
+    public void testSignup() {
+        // Test we can signup a new user
+        def u = [
+                fullName: 'From Signup Test',
+                email: 'signup@auto.com',
+                password: 'signup'
+        ]
+        givenBase()
+                .body(json(u))
+                .contentType(JSON)
+            .post('/api/signup')
+            .then().assertThat()
+                .statusCode(200);
+
+
+        // Check login
+        login(u.email, u.password)
+            .get('/api/users/search/self')
+            .then().assertThat()
+                .statusCode(200)
+                .body('fullName', is(u.fullName))
+    }
+
+    @Test
     public void testMealSearch() {
         def u1spec = login(DemoData.u1.email, DemoData.DUMMY_PASS);
         def givenUser = { given().spec(u1spec) };
-
-        // Test filter requires both start and end params
-        [['dateStart', '2015-05-05'], ['timeStart', '00:01:01']].each {
-            givenUser()
-                    .queryParam(it[0] as String, it[1] as String)
-                .get("/api/meals")
-                .then().assertThat()
-                    .statusCode(400)
-        }
 
         // Get meal count
         Integer count = givenUser().get("/api/meals").body().jsonPath().getInt("page.totalElements");

@@ -8,6 +8,8 @@ import {Observable} from "rxjs/Observable";
 
 type Moment = moment.Moment;
 
+type CaloriesPerDayResult = [{date:string, calories:number}];
+
 @Injectable()
 export class Meals {
 
@@ -15,6 +17,9 @@ export class Meals {
 
   }
 
+  /**
+   * Return a Meal resource, optionally applying a projection
+   */
   find(id:number, projection:string=undefined):Promise<any> {
     let search = new SearchOpts();
     search.projection = projection;
@@ -24,6 +29,9 @@ export class Meals {
       .toPromise();
   }
 
+  /**
+   * List Meal resources.
+   */
   list(search?: SearchOpts):Promise<any> {
     search = search || new SearchOpts();
     return this.http
@@ -32,6 +40,9 @@ export class Meals {
       .toPromise();
   }
 
+  /**
+   * Create or update a meal.
+   */
   save(meal:any):Promise<any> {
     delete meal['_links'];
 
@@ -43,13 +54,19 @@ export class Meals {
     }
   }
 
+  /**
+   * Delete a resource.
+   */
   remove(id:number):Promise<any> {
     return this.http
       .delete(`/meals/${id}`)
       .toPromise();
   }
 
-  getCaloriesPerDay(_start:Moment, _end:Moment):Promise<any> {
+  /**
+   *  Report the sum of calories logged in an interval grouped by day.
+   */
+  getCaloriesPerDay(_start:Moment, _end:Moment):Promise<CaloriesPerDayResult> {
     const mealDateStart = _start.format('YYYY-MM-DD');
     const mealDateEnd = _end.format('YYYY-MM-DD');
     const search = new URLSearchParams();
@@ -63,6 +80,9 @@ export class Meals {
       .toPromise();
   }
 
+  /**
+   * Count number of logged meals (all if ADMIN, for user if USER).
+   */
   getCount() {
     return this.http
       .get('/reports/mealCount')

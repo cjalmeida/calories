@@ -47,6 +47,9 @@ public class AuthController {
     RoleRepository roleRepository;
 
 
+    /**
+     * Login users
+     */
     @RequestMapping(value = "/api/login", method = {RequestMethod.POST})
     public Map<String, Object> login(@RequestBody LoginBody body, HttpServletResponse response) {
         HashMap<String, Object> out = new HashMap<String, Object>();
@@ -73,6 +76,9 @@ public class AuthController {
         return out;
     }
 
+    /**
+     * Signup users.
+     */
     @RequestMapping(value = "/api/signup", method = {RequestMethod.POST})
     @Transactional
     public Map<String, Object> signup(@RequestBody User rUser, HttpServletResponse response) {

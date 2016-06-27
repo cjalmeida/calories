@@ -6,6 +6,9 @@ import {Observable} from 'rxjs/Observable';
 import {Guard, Router, TraversalCandidate, LocationChange} from '@ngrx/router';
 import {AuthService} from './auth.service'
 
+/**
+ * ngrx/router guard to avoid loading secured pages.
+ */
 @Injectable()
 export class AuthGuard implements Guard {
 
@@ -23,7 +26,7 @@ export class AuthGuard implements Guard {
           this.router.go('/login');
         }
       });
-    
+
     return obs;
   }
 }

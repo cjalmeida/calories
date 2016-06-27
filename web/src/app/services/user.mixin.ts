@@ -1,5 +1,6 @@
 import * as _ from 'lodash'
 
+// A minimum user class for authentication purposes.
 export class User {
   fullName: String;
   email: String;

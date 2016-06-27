@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. Cloves Almeida. All rights reserved.
+ */
+
 package tt.calories.domain.projections;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

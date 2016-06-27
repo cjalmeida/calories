@@ -1,15 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Headers} from '@angular/http';
 import {HttpClient} from "../services/httpclient.service";
-import {RequestOptionsArgs, URLSearchParams} from '@angular/http'
-import * as moment  from 'moment';
 import {extractId} from './utils';
 import {SearchOpts} from "./searchopts.ts";
 import {User as UserMixin} from "../services/user.mixin.ts";
-import * as tv4 from 'tv4';
-
-type Moment = moment.Moment;
-
 
 @Injectable()
 export class Users {
@@ -18,14 +11,19 @@ export class Users {
 
   }
 
+  /**
+   * Count number of registered users
+   */
   getCount():Promise<any> {
-    console.log('hello');
     return this.http
       .get('/reports/userCount')
       .toPromise()
       .then((res) => res.json());
   }
 
+  /**
+   * Find a user by id.
+   */
   find(id:number):Promise<any> {
     return this.http
       .get(`/users/${id}`)
@@ -42,6 +40,9 @@ export class Users {
       .toPromise();
   }
 
+  /**
+   * List users.
+   */
   list(search?: SearchOpts):Promise<any> {
     search = search || new SearchOpts();
     return this.http
@@ -50,6 +51,11 @@ export class Users {
       .toPromise();
   }
 
+  /**
+   * Create or update a user.
+   *
+   * A null 'plainPassword' field means no-change.
+   */
   save(user:any):Promise<any> {
     if (user.plainPassword === null) {
       delete user['plainPassword ']
@@ -65,6 +71,9 @@ export class Users {
     }
   }
 
+  /**
+   * Delete a user.
+   */
   remove(id:number):Promise<any> {
     return this.http
       .delete(`/users/${id}`)
@@ -73,6 +82,9 @@ export class Users {
 
 }
 
+/**
+ * Domain class representing a User resource.
+ */
 export class User extends UserMixin {
   id: any;
   next: any;
