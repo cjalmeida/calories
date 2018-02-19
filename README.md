@@ -1,6 +1,8 @@
 Calories App
 ============
 
+Note: this is a test project I used to learn Angular2. At the time it was still in beta so don't consider this a model for current Angular2 dev practices.
+
 Overview
 --------
 This system has the goal of providing a simple Single-Page-Application where users may log meals and calories.
